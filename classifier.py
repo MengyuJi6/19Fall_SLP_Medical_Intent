@@ -108,17 +108,17 @@ if __name__ == "__main__":
 	# classifier = OneVsRestClassifier(LinearSVC(random_state=0, tol=1e-5, max_iter=6000))
 	print('...start training...')
 	classifier.fit(train_X, train_y)
-	# pickle.dump(classifier, open('finalized_model.sav', 'wb'))
+	pickle.dump(classifier, open('finalized_model.sav', 'wb'))
 	# classifier = pickle.load(open('finalized_model.sav', 'rb'))
 	print('...start prediction...')
 	predict_y = classifier.predict(test_X)
 
-	# count = 0
-	# for i in range(len(predict_y)):
-	# 	if predict_y[i] == test_y[i]:
-	# 		count += 1
-	# accuracy = float(count)/float(len(predict_y))
-	# print('accuracy: ' + str(accuracy))
+	count = 0
+	for i in range(len(predict_y)):
+		if predict_y[i] == test_y[i]:
+			count += 1
+	accuracy = float(count)/float(len(predict_y))
+	print('accuracy: ' + str(accuracy))
 
 
 	# convolutional neural network feature weight
