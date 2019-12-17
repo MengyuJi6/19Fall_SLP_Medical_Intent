@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <style>
+    .form-control:disabled{
+      background-color: #f8f9fa;
+    }
+  </style>
+  <title>Get Input</title>
+</head>
+<script>
+  function doSubmit(){
+    // Form Data
+    var formData = new FormData();
+
+    var fileSelect = document.getElementById("fileSelect");
+    if(fileSelect.files && fileSelect.files.length == 1){
+      var file = fileSelect.files[0]
+      formData.set("file", file , file.name);
+    }
+
+    // Http Request
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var myArr = JSON.parse(this.responseText);
+        var department = "";
+        // ["Mental health", "Skin issue", "Internal medicine", "Surgery department", "Other", "Neurology"]
+        if(myArr['result2'] == 'Skin issue'){
+          department = "Room 302 on the 3rd floor"
+        }else if(myArr['result2'] == 'Mental health'){
+          department = "Room 414 on the 4th floor"
+        }else if(myArr['result2'] == 'Internal medicine'){
+          department = "Room 501 on the 5th floor"
+        }else if(myArr['result2'] == 'Surgery department'){
+          department = "Room 303 on the 3rd floor"
+        }else if(myArr['result2'] == 'Neurology'){
+          department = "Room 304 on the 3rd floor"
+        }else{
+          department = "Please speak to our staff to lead you to the right department."
+        }
+        document.getElementById("result").innerHTML = myArr['transcription'];
+        document.getElementById("result2").innerHTML = myArr['result2'];
+        document.getElementById("result3").innerHTML = department;
+
+      }
+    };
+
+    request.open('POST', "http://localhost:5000/getFile");
+    request.send(formData);
+  }
+</script>
+
+<body>
+  <!-- <div style="float: left;">
+    <form>
+    <input id = "fileSelect" type="file" />
+    <button type="button" onclick="doSubmit()">Submit</button>
+</form>
+
+  <textarea id="result" name="message" rows="10" cols="30"></textarea>
+  </div>
+  <div style="float: right;">
+    <textarea name="message" rows="1" cols="30"></textarea><br>
+  <textarea name="message" rows="1" cols="30"></textarea>
+  </div> -->
+
+  <div class="jumbotron" style="margin-left:5%;margin-right:5%;">
+    <div class="container">
+      <h2>Intent Classification Based on Medical Symptom Speech!</h2>
+      <p>By importing an audio file of a patient's symptom speech, we could analyze the correct transcription,
+        predict the correct symptom intent and lead you to the correct department! Just specify an audio file,
+      and then click the magic button!</p>
+    </div>
+  </div>
+  <div class="card-group" style="padding-left:5%; padding-right:5%;">
+    <div class="card">
+      <div class="card-body">
+        <form>
+          <p>
+          Please specify an audio file:<br>
+          <input id = "fileSelect" type="file" />
+          <!-- <button type="button" onclick="doSubmit()">Submit</button> -->
+          </p>
+          <button class="btn btn-outline-secondary" type="button" onclick="doSubmit()" style="width:100%;">Click to process</button>
+        </form>
+        <!-- <button class="btn btn-outline-secondary process" type="button" style="width:100%;">Click to process</button> -->
+        <br><br>
+        <form>
+          <label for="fname">Transcription of the speech:</label>
+          <textarea id="result" class="form-control" name="message" style="width:100%;" disabled></textarea>
+          <!-- <input type="text" class="form-control js-transcription" id="fname" name="fname" style="width:100%" placeholder="" disabled> -->
+        </form>
+        <br><br>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <p>Your symptom intent is:</p>
+        <div class="input-group mb-3">
+          <textarea id="result2" class="form-control" name="message" style="width:100%;" disabled></textarea>
+          <!-- <input type="text" disabled class="form-control" placeholder="" aria-label="symptom" aria-describedby="basic-addon2"> -->
+        </div>
+        <p>The department you need to go is:</p>
+        <div class="input-group mb-3">
+          <textarea id="result3" class="form-control" name="message" style="width:100%;" disabled></textarea>
+          <!-- <input type="text" disabled class="form-control" placeholder="" aria-label="department" aria-describedby="basic-addon2"> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
