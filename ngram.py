@@ -47,7 +47,7 @@ def extract_bigrams():
 
 def main():
 	ngrams = []
-	f = open('bigrams.txt', 'r+')
+	f = open('ngrams.txt', 'r+')
 	for line in f.readlines():
 		line = line.strip()
 		ngrams.append(line)
